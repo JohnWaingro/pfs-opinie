@@ -48,6 +48,10 @@ def init_db():
         ''')
 
 
+# Inicjalizacja bazy przy starcie (dziala rowniez z gunicorn)
+init_db()
+
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -212,5 +216,4 @@ def admin_delete(tid):
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    init_db()
     app.run(debug=True, port=5050)
