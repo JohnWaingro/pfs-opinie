@@ -3,88 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dziekujemy! — Print Flow Solutions</title>
+  <title>Dziekujemy — Print Flow Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --blue1: #00b4d8;
-      --blue2: #0353a4;
-      --grad: linear-gradient(135deg, var(--blue1), var(--blue2));
-    }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f8fafc;
+      font-family: 'Inter', sans-serif;
+      background: #f7f8fa;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 24px;
+      -webkit-font-smoothing: antialiased;
     }
     .card {
       background: #fff;
+      border: 1px solid #e5e7eb;
       border-radius: 20px;
-      box-shadow: 0 4px 32px rgba(0,0,0,.08);
       padding: 56px 48px;
       width: 100%;
-      max-width: 480px;
+      max-width: 440px;
       text-align: center;
+      animation: fadeUp .5s cubic-bezier(.4,0,.2,1) both;
     }
-    .check {
-      width: 80px; height: 80px;
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .logo { height: 34px; object-fit: contain; margin-bottom: 36px; }
+    .check-ring {
+      width: 72px; height: 72px;
       border-radius: 50%;
-      background: var(--grad);
+      background: #0353a4;
       display: flex; align-items: center; justify-content: center;
       margin: 0 auto 28px;
-      font-size: 36px;
-      box-shadow: 0 8px 24px rgba(3,83,164,.3);
-      animation: pop .4s cubic-bezier(.34,1.56,.64,1);
+      box-shadow: 0 8px 24px rgba(3,83,164,.25);
+      animation: pop .45s cubic-bezier(.34,1.56,.64,1) .2s both;
     }
     @keyframes pop {
-      from { transform: scale(.4); opacity: 0; }
+      from { transform: scale(.3); opacity: 0; }
       to   { transform: scale(1);  opacity: 1; }
     }
-    img.logo {
-      height: 36px;
-      object-fit: contain;
-      margin-bottom: 32px;
-    }
+    .check-ring svg { width: 32px; height: 32px; color: #fff; }
     h1 {
+      font-family: 'Space Grotesk', sans-serif;
       font-size: 24px;
       font-weight: 700;
-      color: #111827;
+      letter-spacing: -.3px;
+      color: #0d0d0d;
       margin-bottom: 12px;
     }
     p {
       color: #6b7280;
-      font-size: 15px;
-      line-height: 1.65;
+      font-size: 14.5px;
+      line-height: 1.7;
     }
-    .divider {
-      height: 1px;
-      background: #f3f4f6;
-      margin: 28px 0;
-    }
+    .divider { height: 1px; background: #f3f4f6; margin: 28px 0; }
     .back {
       display: inline-block;
-      padding: 12px 28px;
-      border-radius: 10px;
-      background: var(--grad);
+      padding: 11px 28px;
+      border-radius: 9px;
+      background: #0353a4;
       color: #fff;
-      font-weight: 600;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
       font-size: 14px;
       text-decoration: none;
-      box-shadow: 0 4px 12px rgba(3,83,164,.25);
-      transition: opacity .2s;
+      box-shadow: 0 4px 12px rgba(3,83,164,.2);
+      transition: background .2s, transform .15s, box-shadow .2s;
     }
-    .back:hover { opacity: .88; }
+    .back:hover { background: #024a90; transform: translateY(-1px); box-shadow: 0 8px 18px rgba(3,83,164,.28); }
   </style>
 </head>
 <body>
 <div class="card">
   <img src="/static/logo.png" alt="Print Flow Solutions" class="logo">
-  <div class="check">✓</div>
+  <div class="check-ring">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  </div>
   <h1>Dziekujemy, {{ name }}!</h1>
-  <p>Twoja opinia zostala przyjeta. Po krotkim przegladzeniu przez nasz zespol pojawi sie na stronie <strong>print-flow.com.pl</strong>.</p>
+  <p>Twoja opinia zostala przyjeta. Po krotkim przegladzeniu przez nasz zespol pojawi sie na stronie <strong>printflow.com.pl</strong>.</p>
   <div class="divider"></div>
   <a class="back" href="/">Dodaj kolejna opinie</a>
 </div>
