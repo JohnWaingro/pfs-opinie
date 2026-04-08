@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin — Print Flow Opinie</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue1: #00b4d8;
+      --blue2: #0353a4;
+      --grad: linear-gradient(135deg, var(--blue1), var(--blue2));
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --surface2: #1a1a26;
+      --border: #1e1e2e;
+      --text: #e5e7eb;
+      --muted: #6b7280;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .header-logo { height: 28px; object-fit: contain; filter: brightness(0) invert(1); opacity: .85; }
+    .header-right { display: flex; align-items: center; gap: 20px; }
+    .header-right a { color: var(--muted); font-size: 13px; text-decoration: none; transition: color .15s; }
+    .header-right a:hover { color: var(--text); }
+    .view-form-btn {
+      padding: 6px 14px;
+      border-radius: 6px;
+      background: var(--grad);
+      color: #fff !important;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Layout */
+    .layout { display: flex; min-height: calc(100vh - 60px); }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 16px;
+    }
+    .sidebar-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      padding: 0 12px;
+      margin-bottom: 8px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      transition: background .15s, color .15s;
+      margin-bottom: 2px;
+    }
+    .nav-item:hover { background: var(--surface2); color: var(--text); }
+    .nav-item.active { background: rgba(0,180,216,.12); color: var(--blue1); }
+    .nav-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .pending .nav-badge { background: rgba(245,158,11,.15); color: #f59e0b; }
+    .approved .nav-badge { background: rgba(16,185,129,.15); color: #10b981; }
+    .rejected .nav-badge { background: rgba(239,68,68,.15); color: #ef4444; }
+
+    /* Main */
+    .main { flex: 1; padding: 28px; overflow-y: auto; }
+    .page-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 80px 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+    .empty-state .big { font-size: 40px; margin-bottom: 12px; }
+
+    /* Card */
+    .t-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      transition: border-color .2s;
+    }
+    .t-card:hover { border-color: #2a2a3e; }
+
+    .avatar {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .avatar-ini {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--grad);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 18px; color: #fff;
+      flex-shrink: 0;
+    }
+
+    .t-body { flex: 1; min-width: 0; }
+    .t-meta { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+    .t-name { font-size: 15px; font-weight: 600; color: #fff; }
+    .t-co { font-size: 13px; color: var(--muted); }
+
+    .t-stars { color: #f59e0b; font-size: 13px; letter-spacing: 1px; margin-bottom: 8px; }
+    .t-text { font-size: 14px; color: #9ca3af; line-height: 1.6; margin-bottom: 10px; }
+    .t-date { font-size: 11px; color: #4b5563; margin-bottom: 14px; }
+
+    .t-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: opacity .15s, transform .1s;
+    }
+    .btn:hover { opacity: .85; }
+    .btn:active { transform: scale(.97); }
+    .btn-approve { background: rgba(16,185,129,.15); color: #10b981; border: 1px solid rgba(16,185,129,.3); }
+    .btn-reject  { background: rgba(239,68,68,.1);  color: #f87171; border: 1px solid rgba(239,68,68,.25); }
+    .btn-pending { background: rgba(245,158,11,.1); color: #fbbf24; border: 1px solid rgba(245,158,11,.25); }
+    .btn-delete  { background: transparent; color: #4b5563; border: 1px solid var(--border); }
+    .btn-delete:hover { color: #f87171; border-color: rgba(239,68,68,.3); }
+
+    /* Photo thumbnail in card */
+    .t-photo {
+      margin-top: 10px;
+      max-height: 160px;
+      max-width: 200px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="/static/logo.png" alt="PFS" class="header-logo">
+  <div class="header-right">
+    <a href="/" target="_blank" class="view-form-btn">Podglad formularza</a>
+    <a href="/admin/logout">Wyloguj</a>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-label">Opinie</div>
+    <a class="nav-item pending {% if status_filter == 'pending' %}active{% endif %}"
+       href="/admin?status=pending">
+      Oczekujace
+      <span class="nav-badge">{{ counts.get('pending', 0) }}</span>
+    </a>
+    <a class="nav-item approved {% if status_filter == 'approved' %}active{% endif %}"
+       href="/admin?status=approved">
+      Zatwierdzone
+      <span class="nav-badge">{{ counts.get('approved', 0) }}</span>
+    </a>
+    <a class="nav-item rejected {% if status_filter == 'rejected' %}active{% endif %}"
+       href="/admin?status=rejected">
+      Odrzucone
+      <span class="nav-badge">{{ counts.get('rejected', 0) }}</span>
+    </a>
+
+    <div style="height:1px;background:var(--border);margin:20px 12px"></div>
+    <div class="sidebar-label">API</div>
+    <a class="nav-item" href="/api/testimonials" target="_blank">
+      Endpoint JSON
+    </a>
+  </aside>
+
+  <main class="main">
+    <div class="page-title">
+      {% if status_filter == 'pending' %}Oczekujace na zatwierdzenie
+      {% elif status_filter == 'approved' %}Zatwierdzone opinie
+      {% else %}Odrzucone opinie{% endif %}
+      {% if testimonials %}<span style="color:var(--muted);font-weight:400;font-size:14px;margin-left:8px;">({{ testimonials|length }})</span>{% endif %}
+    </div>
+
+    {% if not testimonials %}
+    <div class="empty-state">
+      <div class="big">
+        {% if status_filter == 'pending' %}📬{% elif status_filter == 'approved' %}✅{% else %}🗑{% endif %}
+      </div>
+      Brak opinii w tej kategorii.
+    </div>
+    {% endif %}
+
+    {% for t in testimonials %}
+    <div class="t-card">
+      {% if t['photo_filename'] %}
+        <img class="avatar" src="/static/uploads/{{ t['photo_filename'] }}" alt="{{ t['name'] }}">
+      {% else %}
+        <div class="avatar-ini">
+          {{ t['name'][:1] }}{% if ' ' in t['name'] %}{{ t['name'].split(' ')[1][:1] }}{% endif %}
+        </div>
+      {% endif %}
+
+      <div class="t-body">
+        <div class="t-meta">
+          <span class="t-name">{{ t['name'] }}</span>
+          {% if t['company'] %}<span class="t-co">{{ t['company'] }}</span>{% endif %}
+          {% if t['job_title'] %}<span class="t-co">· {{ t['job_title'] }}</span>{% endif %}
+        </div>
+        <div class="t-stars">
+          {% for i in range(t['rating']) %}★{% endfor %}{% for i in range(5 - t['rating']) %}☆{% endfor %}
+        </div>
+        <p class="t-text">{{ t['text'] }}</p>
+
+        {% if t['photo_filename'] %}
+        <div><img class="t-photo" src="/static/uploads/{{ t['photo_filename'] }}" alt="zdjecie klienta"></div>
+        {% endif %}
+
+        <div class="t-date">Dodano: {{ t['created_at'][:16].replace('T', ' ') }}</div>
+
+        <div class="t-actions">
+          {% if t['status'] != 'approved' %}
+          <form method="post" action="/admin/action/{{ t['id'] }}">
+            <input type="hidden" name="action" value="approved">
+            <button class="btn btn-approve">Zatwierdz</button>
+          </form>
+          {% endif %}
+          {% if t['status'] != 'rejected' %}
+          <form method="post" action="/admin/action/{{ t['id'] }}">
+            <input type="hidden" name="action" value="rejected">
+            <button class="btn btn-reject">Odrzuc</button>
+          </form>
+          {% endif %}
+          {% if t['status'] != 'pending' %}
+          <form method="post" action="/admin/action/{{ t['id'] }}">
+            <input type="hidden" name="action" value="pending">
+            <button class="btn btn-pending">Cofnij</button>
+          </form>
+          {% endif %}
+          <form method="post" action="/admin/delete/{{ t['id'] }}"
+                onsubmit="return confirm('Na pewno usunac?')">
+            <button class="btn btn-delete">Usun</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </main>
+</div>
+</body>
+</html>

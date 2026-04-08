@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Podziel sie opinia — Print Flow Solutions</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue1: #00b4d8;
+      --blue2: #0353a4;
+      --grad: linear-gradient(135deg, var(--blue1), var(--blue2));
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f8fafc;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+    }
+
+    /* ---- LEFT PANEL ---- */
+    .panel-left {
+      width: 380px;
+      flex-shrink: 0;
+      background: var(--grad);
+      display: flex;
+      flex-direction: column;
+      padding: 48px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel-left::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.08);
+    }
+    .panel-left::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.06);
+    }
+    .panel-logo {
+      height: 44px;
+      object-fit: contain;
+      object-position: left;
+      margin-bottom: 48px;
+      position: relative; z-index: 1;
+    }
+    .panel-heading {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 16px;
+      position: relative; z-index: 1;
+    }
+    .panel-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,.8);
+      line-height: 1.6;
+      margin-bottom: 40px;
+      position: relative; z-index: 1;
+    }
+    .panel-facts {
+      list-style: none;
+      position: relative; z-index: 1;
+      margin-top: auto;
+    }
+    .panel-facts li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255,255,255,.9);
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+    .panel-facts li .icon {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,.15);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    /* ---- RIGHT PANEL ---- */
+    .panel-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 40px;
+      overflow-y: auto;
+    }
+    .form-card {
+      width: 100%;
+      max-width: 520px;
+    }
+    .form-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .form-sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    .flash {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .field { margin-bottom: 20px; }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+    .field label .req { color: #ef4444; margin-left: 2px; }
+    .field input, .field textarea {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 15px;
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      font-family: inherit;
+      background: #fff;
+    }
+    .field input:focus, .field textarea:focus {
+      border-color: var(--blue1);
+      box-shadow: 0 0 0 3px rgba(0,180,216,.12);
+    }
+    .field textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+    .field .char-count {
+      text-align: right;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* Stars */
+    .stars-label { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 8px; display: block; }
+    .stars-wrap {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+    }
+    .stars-wrap input { display: none; }
+    .stars-wrap label {
+      font-size: 36px;
+      cursor: pointer;
+      color: #d1d5db;
+      transition: color .1s, transform .1s;
+      line-height: 1;
+    }
+    .stars-wrap input:checked ~ label,
+    .stars-wrap label:hover,
+    .stars-wrap label:hover ~ label { color: #f59e0b; }
+    .stars-wrap label:hover { transform: scale(1.15); }
+
+    /* Upload */
+    .upload-zone {
+      border: 2px dashed #d1d5db;
+      border-radius: 10px;
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      background: #fff;
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: var(--blue1);
+      background: #f0faff;
+    }
+    .upload-zone input { display: none; }
+    .upload-zone .up-icon { font-size: 30px; margin-bottom: 8px; }
+    .upload-zone .up-title { font-size: 14px; font-weight: 600; color: var(--text); }
+    .upload-zone .up-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    #photo-preview {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 12px auto 0;
+      display: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+    .preview-name { font-size: 12px; color: var(--blue2); margin-top: 6px; font-weight: 500; }
+
+    /* Submit */
+    .btn-submit {
+      width: 100%;
+      background: var(--grad);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: .3px;
+      transition: opacity .2s, transform .1s;
+      box-shadow: 0 4px 14px rgba(3,83,164,.25);
+    }
+    .btn-submit:hover { opacity: .92; }
+    .btn-submit:active { transform: scale(.99); }
+
+    .privacy {
+      text-align: center;
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+
+    /* Mobile */
+    @media (max-width: 720px) {
+      body { flex-direction: column; }
+      .panel-left {
+        width: 100%;
+        padding: 32px 24px;
+        min-height: auto;
+      }
+      .panel-facts { display: none; }
+      .panel-heading { font-size: 20px; }
+      .panel-right { padding: 32px 20px; }
+      .row-2 { grid-template-columns: 1fr; gap: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LEFT -->
+<div class="panel-left">
+  <img src="/static/logo_white.png" alt="Print Flow Solutions" class="panel-logo">
+  <h1 class="panel-heading">Twoja opinia<br>jest dla nas wazna</h1>
+  <p class="panel-sub">Dziekujemy za wspolprace. Powiedz, jak oceniasz nasze uslug — pomoze to innym firmom podjac dobra decyzje.</p>
+  <ul class="panel-facts">
+    <li><span class="icon">⏱</span> Wypelnienie zajmie 2 minuty</li>
+    <li><span class="icon">🔒</span> Twoje dane sa bezpieczne</li>
+    <li><span class="icon">✅</span> Opinia pojawi sie po weryfikacji</li>
+    <li><span class="icon">🏢</span> 194 firm nam zaufalo</li>
+  </ul>
+</div>
+
+<!-- RIGHT -->
+<div class="panel-right">
+  <div class="form-card">
+    <h2 class="form-title">Napisz opinie</h2>
+    <p class="form-sub">Pola oznaczone * sa wymagane.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for cat, msg in messages %}
+        <div class="flash">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <form action="/submit" method="post" enctype="multipart/form-data" id="opinia-form">
+
+      <div class="row-2">
+        <div class="field">
+          <label for="name">Imie i nazwisko <span class="req">*</span></label>
+          <input type="text" id="name" name="name" placeholder="Jan Kowalski" required autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="company">Firma</label>
+          <input type="text" id="company" name="company" placeholder="Nazwa firmy" autocomplete="organization">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="job_title">Stanowisko</label>
+        <input type="text" id="job_title" name="job_title" placeholder="np. Kierownik biura, Dyrektor IT">
+      </div>
+
+      <div class="field">
+        <span class="stars-label">Ocena ogolna <span class="req">*</span></span>
+        <div class="stars-wrap">
+          <input type="radio" id="s5" name="rating" value="5" checked>
+          <label for="s5" title="5 — swietnie">&#9733;</label>
+          <input type="radio" id="s4" name="rating" value="4">
+          <label for="s4" title="4 — bardzo dobrze">&#9733;</label>
+          <input type="radio" id="s3" name="rating" value="3">
+          <label for="s3" title="3 — srednio">&#9733;</label>
+          <input type="radio" id="s2" name="rating" value="2">
+          <label for="s2" title="2 — slabo">&#9733;</label>
+          <input type="radio" id="s1" name="rating" value="1">
+          <label for="s1" title="1 — zle">&#9733;</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="text">Twoja opinia <span class="req">*</span></label>
+        <textarea id="text" name="text" placeholder="Co szczegolnie Ci sie podobalo? Jak oceniasz obsluge, czas reakcji, jakosc serwisu?" required maxlength="800" oninput="updateCount(this)"></textarea>
+        <div class="char-count"><span id="char-count">0</span> / 800</div>
+      </div>
+
+      <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px;">Twoje zdjecie lub logo firmy (opcjonalnie)</label>
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('photo').click()">
+        <div class="up-icon">📷</div>
+        <div class="up-title">Kliknij lub przeciagnij plik tutaj</div>
+        <div class="up-sub">JPG, PNG, WebP · max 5 MB</div>
+        <img id="photo-preview" alt="Podglad zdjecia">
+        <div class="preview-name" id="preview-name"></div>
+        <input type="file" id="photo" name="photo" accept="image/*" onchange="handleFile(this.files[0])">
+      </div>
+
+      <button type="submit" class="btn-submit">Wyslij opinie &rarr;</button>
+    </form>
+
+    <p class="privacy">Wyslanie opinii oznacza zgode na jej publikacje na stronie print-flow.com.pl.<br>Nie udostepniamy Twoich danych osobom trzecim.</p>
+  </div>
+</div>
+
+<script>
+function updateCount(el) {
+  document.getElementById('char-count').textContent = el.value.length;
+}
+
+function handleFile(file) {
+  if (!file) return;
+  const preview = document.getElementById('photo-preview');
+  const nameEl = document.getElementById('preview-name');
+  const reader = new FileReader();
+  reader.onload = e => {
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    nameEl.textContent = file.name;
+  };
+  reader.readAsDataURL(file);
+}
+
+// Drag & drop
+const zone = document.getElementById('upload-zone');
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+zone.addEventListener('drop', e => {
+  e.preventDefault();
+  zone.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    document.getElementById('photo').files = e.dataTransfer.files;
+    handleFile(file);
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: pfs-opinie
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 2
+    disk:
+      name: data
+      mountPath: /data
+    envVars:
+      - key: DB_PATH
+        value: /data/testimonials.db
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_PASSWORD
+        sync: false          # wpisz recznie w dashboardzie Render
