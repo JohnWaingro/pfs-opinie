@@ -16,7 +16,7 @@ UPLOAD_FOLDER = os.path.join(app.static_folder, 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'pfs2026')
 
-app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5 MB
+app.config['MAX_CONTENT_LENGTH'] = 12 * 1024 * 1024  # 12 MB (2x pliki po 5 MB + overhead)
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -42,10 +42,16 @@ def init_db():
                 text            TEXT NOT NULL,
                 rating          INTEGER DEFAULT 5,
                 photo_filename  TEXT,
+                logo_filename   TEXT,
                 status          TEXT DEFAULT 'pending',
                 created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         ''')
+        # migracja dla starszych baz
+        try:
+            conn.execute('ALTER TABLE testimonials ADD COLUMN logo_filename TEXT')
+        except Exception:
+            pass
 
 
 # Inicjalizacja bazy przy starcie (dziala rowniez z gunicorn)
@@ -96,19 +102,23 @@ def submit():
     except ValueError:
         rating = 5
 
-    photo_filename = None
-    if 'photo' in request.files:
-        photo = request.files['photo']
-        if photo.filename and allowed_file(photo.filename):
-            ext = secure_filename(photo.filename).rsplit('.', 1)[1].lower()
-            photo_filename = f"{uuid.uuid4().hex}.{ext}"
-            photo.save(os.path.join(UPLOAD_FOLDER, photo_filename))
+    def save_upload(field_name):
+        f = request.files.get(field_name)
+        if f and f.filename and allowed_file(f.filename):
+            ext = secure_filename(f.filename).rsplit('.', 1)[1].lower()
+            fname = f"{uuid.uuid4().hex}.{ext}"
+            f.save(os.path.join(UPLOAD_FOLDER, fname))
+            return fname
+        return None
+
+    photo_filename = save_upload('photo')
+    logo_filename = save_upload('logo')
 
     with get_db() as conn:
         conn.execute(
-            '''INSERT INTO testimonials (name, company, job_title, text, rating, photo_filename)
-               VALUES (?, ?, ?, ?, ?, ?)''',
-            (name, company, job_title, text, rating, photo_filename)
+            '''INSERT INTO testimonials (name, company, job_title, text, rating, photo_filename, logo_filename)
+               VALUES (?, ?, ?, ?, ?, ?, ?)''',
+            (name, company, job_title, text, rating, photo_filename, logo_filename)
         )
 
     return render_template('success.html', name=name)
@@ -130,13 +140,16 @@ def api_testimonials():
     result = []
     for row in rows:
         t = dict(row)
-        if t['photo_filename']:
-            t['photo_url'] = url_for(
-                'static', filename=f"uploads/{t['photo_filename']}", _external=True
-            )
-        else:
-            t['photo_url'] = None
+        t['photo_url'] = (
+            url_for('static', filename=f"uploads/{t['photo_filename']}", _external=True)
+            if t.get('photo_filename') else None
+        )
+        t['logo_url'] = (
+            url_for('static', filename=f"uploads/{t['logo_filename']}", _external=True)
+            if t.get('logo_filename') else None
+        )
         del t['photo_filename']
+        del t['logo_filename']
         result.append(t)
 
     resp = jsonify(result)

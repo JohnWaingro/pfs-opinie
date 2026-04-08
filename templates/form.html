@@ -28,12 +28,12 @@
 
     /* ---- LEFT PANEL ---- */
     .panel-left {
-      width: 380px;
+      width: 360px;
       flex-shrink: 0;
       background: var(--grad);
       display: flex;
       flex-direction: column;
-      padding: 48px 40px;
+      padding: 52px 44px;
       position: relative;
       overflow: hidden;
     }
@@ -41,23 +41,23 @@
       content: '';
       position: absolute;
       top: -80px; right: -80px;
-      width: 320px; height: 320px;
+      width: 300px; height: 300px;
       border-radius: 50%;
-      background: rgba(255,255,255,.08);
+      background: rgba(255,255,255,.07);
     }
     .panel-left::after {
       content: '';
       position: absolute;
       bottom: -60px; left: -60px;
-      width: 240px; height: 240px;
+      width: 220px; height: 220px;
       border-radius: 50%;
-      background: rgba(255,255,255,.06);
+      background: rgba(255,255,255,.05);
     }
     .panel-logo {
-      height: 44px;
+      height: 42px;
       object-fit: contain;
       object-position: left;
-      margin-bottom: 48px;
+      margin-bottom: 52px;
       position: relative; z-index: 1;
     }
     .panel-heading {
@@ -71,30 +71,35 @@
     .panel-sub {
       font-size: 15px;
       color: rgba(255,255,255,.8);
-      line-height: 1.6;
-      margin-bottom: 40px;
+      line-height: 1.65;
+      position: relative; z-index: 1;
+    }
+    .panel-divider {
+      height: 1px;
+      background: rgba(255,255,255,.2);
+      margin: 36px 0;
       position: relative; z-index: 1;
     }
     .panel-facts {
       list-style: none;
       position: relative; z-index: 1;
-      margin-top: auto;
     }
     .panel-facts li {
       display: flex;
-      align-items: center;
-      gap: 12px;
-      color: rgba(255,255,255,.9);
+      align-items: flex-start;
+      gap: 14px;
+      color: rgba(255,255,255,.85);
       font-size: 14px;
-      margin-bottom: 16px;
+      line-height: 1.5;
+      margin-bottom: 18px;
     }
-    .panel-facts li .icon {
-      width: 36px; height: 36px;
-      background: rgba(255,255,255,.15);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 17px;
+    .panel-facts li::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.6);
       flex-shrink: 0;
+      margin-top: 6px;
     }
 
     /* ---- RIGHT PANEL ---- */
@@ -193,15 +198,26 @@
     .stars-wrap label:hover { transform: scale(1.15); }
 
     /* Upload */
+    .upload-section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 12px;
+    }
+    .upload-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
     .upload-zone {
       border: 2px dashed #d1d5db;
       border-radius: 10px;
-      padding: 24px;
+      padding: 18px 12px;
       text-align: center;
       cursor: pointer;
       transition: border-color .2s, background .2s;
       background: #fff;
-      margin-bottom: 28px;
       position: relative;
     }
     .upload-zone:hover, .upload-zone.dragover {
@@ -209,18 +225,19 @@
       background: #f0faff;
     }
     .upload-zone input { display: none; }
-    .upload-zone .up-icon { font-size: 30px; margin-bottom: 8px; }
-    .upload-zone .up-title { font-size: 14px; font-weight: 600; color: var(--text); }
-    .upload-zone .up-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
-    #photo-preview {
-      width: 80px; height: 80px;
-      border-radius: 50%;
+    .upload-zone .up-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .upload-zone .up-sub { font-size: 11px; color: var(--muted); }
+    .upload-zone .up-type { font-size: 11px; color: var(--blue2); font-weight: 600; margin-bottom: 8px; }
+    .up-preview {
+      width: 56px; height: 56px;
+      border-radius: 8px;
       object-fit: cover;
-      margin: 12px auto 0;
+      margin: 8px auto 4px;
       display: none;
-      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+      box-shadow: 0 2px 6px rgba(0,0,0,.12);
     }
-    .preview-name { font-size: 12px; color: var(--blue2); margin-top: 6px; font-weight: 500; }
+    .up-preview.round { border-radius: 50%; }
+    .up-filename { font-size: 11px; color: var(--blue2); margin-top: 2px; word-break: break-all; }
 
     /* Submit */
     .btn-submit {
@@ -254,12 +271,13 @@
       .panel-left {
         width: 100%;
         padding: 32px 24px;
-        min-height: auto;
       }
       .panel-facts { display: none; }
+      .panel-divider { display: none; }
       .panel-heading { font-size: 20px; }
       .panel-right { padding: 32px 20px; }
       .row-2 { grid-template-columns: 1fr; gap: 0; }
+      .upload-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -269,12 +287,13 @@
 <div class="panel-left">
   <img src="/static/logo_white.png" alt="Print Flow Solutions" class="panel-logo">
   <h1 class="panel-heading">Twoja opinia<br>jest dla nas wazna</h1>
-  <p class="panel-sub">Dziekujemy za wspolprace. Powiedz, jak oceniasz nasze uslug — pomoze to innym firmom podjac dobra decyzje.</p>
+  <p class="panel-sub">Dziekujemy za wspolprace. Powiedz nam, jak oceniasz nasze uslugi — pomaga to innym firmom podjac dobra decyzje.</p>
+  <div class="panel-divider"></div>
   <ul class="panel-facts">
-    <li><span class="icon">⏱</span> Wypelnienie zajmie 2 minuty</li>
-    <li><span class="icon">🔒</span> Twoje dane sa bezpieczne</li>
-    <li><span class="icon">✅</span> Opinia pojawi sie po weryfikacji</li>
-    <li><span class="icon">🏢</span> 194 firm nam zaufalo</li>
+    <li>Wypelnienie zajmuje okolo 2 minut</li>
+    <li>Twoje dane sa bezpieczne i nie trafiaja do osob trzecich</li>
+    <li>Opinia pojawi sie na stronie po krotkim przegladzeniu przez nasz zespol</li>
+    <li>194 firmy nam juz zaufaly</li>
   </ul>
 </div>
 
@@ -330,20 +349,33 @@
         <div class="char-count"><span id="char-count">0</span> / 800</div>
       </div>
 
-      <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px;">Twoje zdjecie lub logo firmy (opcjonalnie)</label>
-      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('photo').click()">
-        <div class="up-icon">📷</div>
-        <div class="up-title">Kliknij lub przeciagnij plik tutaj</div>
-        <div class="up-sub">JPG, PNG, WebP · max 5 MB</div>
-        <img id="photo-preview" alt="Podglad zdjecia">
-        <div class="preview-name" id="preview-name"></div>
-        <input type="file" id="photo" name="photo" accept="image/*" onchange="handleFile(this.files[0])">
+      <div class="upload-section-title">Zdjecia (opcjonalnie)</div>
+      <div class="upload-row">
+
+        <div class="upload-zone" id="zone-photo" onclick="document.getElementById('photo').click()">
+          <div class="up-type">Twoje zdjecie</div>
+          <div class="up-title">Kliknij, aby dodac</div>
+          <div class="up-sub">JPG, PNG, WebP · max 5 MB</div>
+          <img id="preview-photo" class="up-preview round" alt="">
+          <div class="up-filename" id="name-photo"></div>
+          <input type="file" id="photo" name="photo" accept="image/*" onchange="handleFile(this, 'preview-photo', 'name-photo')">
+        </div>
+
+        <div class="upload-zone" id="zone-logo" onclick="document.getElementById('logo').click()">
+          <div class="up-type">Logo firmy</div>
+          <div class="up-title">Kliknij, aby dodac</div>
+          <div class="up-sub">JPG, PNG, WebP · max 5 MB</div>
+          <img id="preview-logo" class="up-preview" alt="">
+          <div class="up-filename" id="name-logo"></div>
+          <input type="file" id="logo" name="logo" accept="image/*" onchange="handleFile(this, 'preview-logo', 'name-logo')">
+        </div>
+
       </div>
 
       <button type="submit" class="btn-submit">Wyslij opinie &rarr;</button>
     </form>
 
-    <p class="privacy">Wyslanie opinii oznacza zgode na jej publikacje na stronie print-flow.com.pl.<br>Nie udostepniamy Twoich danych osobom trzecim.</p>
+    <p class="privacy">Wyslanie opinii oznacza zgode na jej publikacje na stronie printflow.com.pl.</p>
   </div>
 </div>
 
@@ -352,10 +384,11 @@ function updateCount(el) {
   document.getElementById('char-count').textContent = el.value.length;
 }
 
-function handleFile(file) {
+function handleFile(input, previewId, nameId) {
+  const file = input.files && input.files[0];
   if (!file) return;
-  const preview = document.getElementById('photo-preview');
-  const nameEl = document.getElementById('preview-name');
+  const preview = document.getElementById(previewId);
+  const nameEl = document.getElementById(nameId);
   const reader = new FileReader();
   reader.onload = e => {
     preview.src = e.target.result;
@@ -365,18 +398,24 @@ function handleFile(file) {
   reader.readAsDataURL(file);
 }
 
-// Drag & drop
-const zone = document.getElementById('upload-zone');
-zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
-zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
-zone.addEventListener('drop', e => {
-  e.preventDefault();
-  zone.classList.remove('dragover');
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith('image/')) {
-    document.getElementById('photo').files = e.dataTransfer.files;
-    handleFile(file);
-  }
+// Drag & drop dla obu stref
+['zone-photo', 'zone-logo'].forEach(zoneId => {
+  const zone = document.getElementById(zoneId);
+  const inputId = zoneId === 'zone-photo' ? 'photo' : 'logo';
+  const prevId  = zoneId === 'zone-photo' ? 'preview-photo' : 'preview-logo';
+  const nameId  = zoneId === 'zone-photo' ? 'name-photo' : 'name-logo';
+
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      document.getElementById(inputId).files = e.dataTransfer.files;
+      handleFile(document.getElementById(inputId), prevId, nameId);
+    }
+  });
 });
 </script>
 </body>
