@@ -9,21 +9,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --blue:   #0353a4;
-      --blue-l: #00b4d8;
-      --grad:   linear-gradient(140deg, #0353a4 0%, #00b4d8 100%);
-      --text:   #0d0d0d;
-      --muted:  #6b7280;
-      --border: #e5e7eb;
-      --bg:     #f7f8fa;
-      --white:  #ffffff;
-      --ease:   cubic-bezier(.4, 0, .2, 1);
+      --blue: #0353a4; --blue-l: #00b4d8;
+      --text: #0d0d0d; --muted: #6b7280; --border: #e5e7eb; --bg: #f7f8fa;
+      --ease: cubic-bezier(.4,0,.2,1);
     }
-
-    html { scroll-behavior: smooth; }
-
     body {
       font-family: 'Inter', sans-serif;
       background: var(--bg);
@@ -33,396 +23,134 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ------------------------------------------------------------------ */
-    /* LEFT PANEL                                                           */
-    /* ------------------------------------------------------------------ */
+    /* LEFT */
     .panel-left {
-      width: 400px;
-      flex-shrink: 0;
-      background: var(--grad);
-      display: flex;
-      flex-direction: column;
+      width: 380px; flex-shrink: 0;
+      background: linear-gradient(140deg, #0353a4, #00b4d8);
+      display: flex; flex-direction: column;
       padding: 56px 48px;
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
-
-    /* Animated geometric background */
-    .geo {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-    .geo circle, .geo rect {
-      fill: none;
-      stroke: rgba(255,255,255,.1);
-    }
+    .geo { position: absolute; inset: 0; pointer-events: none; }
     .geo .r1 { animation: spin 28s linear infinite; transform-origin: 200px 180px; }
     .geo .r2 { animation: spin 40s linear infinite reverse; transform-origin: 80px 420px; }
     .geo .r3 { animation: spin 22s linear infinite; transform-origin: 340px 520px; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     .panel-content { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; }
+    .panel-logo { height: 38px; object-fit: contain; object-position: left; margin-bottom: 60px; }
+    .panel-eyebrow { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,.6); margin-bottom: 14px; }
+    .panel-heading { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: #fff; line-height: 1.25; letter-spacing: -.4px; margin-bottom: 18px; }
+    .panel-sub { font-size: 15px; color: rgba(255,255,255,.72); line-height: 1.7; }
+    .panel-divider { height: 1px; background: rgba(255,255,255,.15); margin: 36px 0; }
+    .panel-facts { list-style: none; margin-top: auto; }
+    .panel-facts li { display: flex; gap: 12px; color: rgba(255,255,255,.8); font-size: 13.5px; line-height: 1.55; margin-bottom: 16px; }
+    .fact-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.5); flex-shrink: 0; margin-top: 7px; }
 
-    .panel-logo {
-      height: 38px;
-      object-fit: contain;
-      object-position: left;
-      margin-bottom: 64px;
-    }
+    /* RIGHT */
+    .panel-right { flex: 1; display: flex; align-items: center; justify-content: center; padding: 56px 48px; overflow-y: auto; }
+    .form-card { width: 100%; max-width: 480px; animation: fadeUp .5s var(--ease) both; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
 
-    .panel-eyebrow {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.6);
-      margin-bottom: 16px;
-    }
-
-    .panel-heading {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 30px;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.2;
-      letter-spacing: -.5px;
-      margin-bottom: 20px;
-    }
-
-    .panel-sub {
-      font-size: 15px;
-      font-weight: 400;
-      color: rgba(255,255,255,.72);
-      line-height: 1.7;
-    }
-
-    .panel-divider {
-      height: 1px;
-      background: rgba(255,255,255,.15);
-      margin: 40px 0;
-    }
-
-    .panel-facts {
-      list-style: none;
-      margin-top: auto;
-    }
-    .panel-facts li {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      color: rgba(255,255,255,.8);
-      font-size: 13.5px;
-      line-height: 1.55;
-      margin-bottom: 16px;
-    }
-    .fact-dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.5);
-      flex-shrink: 0;
-      margin-top: 7px;
-    }
-
-    /* ------------------------------------------------------------------ */
-    /* RIGHT PANEL                                                          */
-    /* ------------------------------------------------------------------ */
-    .panel-right {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 56px 48px;
-      overflow-y: auto;
-    }
-
-    .form-card {
-      width: 100%;
-      max-width: 500px;
-      animation: fadeUp .5s var(--ease) both;
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .form-eyebrow {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--blue);
-      margin-bottom: 10px;
-    }
-
-    .form-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: -.4px;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .form-sub {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 36px;
-      line-height: 1.6;
-    }
-
-    .flash {
-      background: #fef2f2;
-      border: 1px solid #fecaca;
-      color: #991b1b;
-      border-radius: 8px;
-      padding: 12px 16px;
-      font-size: 13.5px;
-      margin-bottom: 24px;
-    }
+    .form-eyebrow { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+    .form-title { font-family: 'Space Grotesk', sans-serif; font-size: 25px; font-weight: 700; letter-spacing: -.4px; color: var(--text); margin-bottom: 6px; }
+    .form-sub { font-size: 14px; color: var(--muted); margin-bottom: 32px; line-height: 1.6; }
+    .flash { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; border-radius: 8px; padding: 12px 16px; font-size: 13.5px; margin-bottom: 20px; }
 
     .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-    .field { margin-bottom: 18px; }
-    .field label {
-      display: block;
-      font-size: 12.5px;
-      font-weight: 600;
-      color: #374151;
-      letter-spacing: .2px;
-      margin-bottom: 7px;
-    }
-    .field label .req { color: #ef4444; margin-left: 2px; }
-
+    .field { margin-bottom: 17px; }
+    .field label { display: block; font-size: 12.5px; font-weight: 600; color: #374151; letter-spacing: .2px; margin-bottom: 6px; }
+    .field label .req { color: #ef4444; }
     .field input, .field textarea {
-      width: 100%;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 14.5px;
-      color: var(--text);
-      outline: none;
-      transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
-      font-family: 'Inter', sans-serif;
-      background: var(--white);
+      width: 100%; border: 1.5px solid var(--border); border-radius: 8px;
+      padding: 10px 14px; font-size: 14.5px; color: var(--text);
+      outline: none; transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+      font-family: 'Inter', sans-serif; background: #fff;
     }
     .field input::placeholder, .field textarea::placeholder { color: #9ca3af; }
-    .field input:focus, .field textarea:focus {
-      border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(3,83,164,.1);
-    }
-    .field textarea {
-      resize: vertical;
-      min-height: 108px;
-      line-height: 1.6;
-    }
-    .char-count {
-      text-align: right;
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 4px;
-    }
+    .field input:focus, .field textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(3,83,164,.1); }
+    .field textarea { resize: vertical; min-height: 106px; line-height: 1.6; }
+    .char-count { text-align: right; font-size: 11px; color: var(--muted); margin-top: 4px; }
 
     /* Stars */
-    .stars-label {
-      font-size: 12.5px;
-      font-weight: 600;
-      color: #374151;
-      letter-spacing: .2px;
-      margin-bottom: 8px;
-      display: block;
-    }
-    .stars-wrap {
-      display: flex;
-      gap: 2px;
-      margin-bottom: 18px;
-      flex-direction: row-reverse;
-      justify-content: flex-end;
-    }
+    .stars-label { font-size: 12.5px; font-weight: 600; color: #374151; letter-spacing: .2px; margin-bottom: 8px; display: block; }
+    .stars-wrap { display: flex; gap: 2px; margin-bottom: 17px; flex-direction: row-reverse; justify-content: flex-end; }
     .stars-wrap input { display: none; }
-    .stars-wrap label {
-      font-size: 34px;
-      cursor: pointer;
-      color: #e5e7eb;
-      transition: color .12s var(--ease), transform .12s var(--ease);
-      line-height: 1;
-    }
-    .stars-wrap input:checked ~ label,
-    .stars-wrap label:hover,
-    .stars-wrap label:hover ~ label { color: #f59e0b; }
+    .stars-wrap label { font-size: 33px; cursor: pointer; color: #e5e7eb; transition: color .12s, transform .12s; line-height: 1; }
+    .stars-wrap input:checked ~ label, .stars-wrap label:hover, .stars-wrap label:hover ~ label { color: #f59e0b; }
     .stars-wrap label:hover { transform: scale(1.18); }
 
-    /* Upload */
-    .upload-label {
-      font-size: 12.5px;
-      font-weight: 600;
-      color: #374151;
-      letter-spacing: .2px;
-      margin-bottom: 10px;
-      display: block;
-    }
-    .upload-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
+    /* Logo upload */
     .upload-zone {
-      border: 1.5px dashed #d1d5db;
-      border-radius: 10px;
-      padding: 20px 12px 16px;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color .2s var(--ease), background .2s var(--ease), transform .15s var(--ease);
-      background: var(--white);
+      border: 1.5px dashed #d1d5db; border-radius: 10px;
+      padding: 22px 16px; text-align: center; cursor: pointer;
+      transition: border-color .2s, background .2s, transform .15s var(--ease);
+      background: #fff; margin-bottom: 20px;
     }
-    .upload-zone:hover {
-      border-color: var(--blue);
-      background: #f0f6ff;
-      transform: translateY(-2px);
-    }
-    .upload-zone.dragover {
-      border-color: var(--blue);
-      background: #e8f0fe;
-    }
+    .upload-zone:hover { border-color: var(--blue); background: #f0f6ff; transform: translateY(-2px); }
+    .upload-zone.dragover { border-color: var(--blue); background: #e8f0fe; }
     .upload-zone input { display: none; }
-
-    .up-icon {
-      width: 32px; height: 32px;
-      margin: 0 auto 8px;
-      color: var(--blue-l);
-    }
-    .up-type {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--blue);
-      margin-bottom: 4px;
-    }
-    .up-title {
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 3px;
-    }
-    .up-sub { font-size: 11px; color: var(--muted); }
-    .up-preview {
-      width: 52px; height: 52px;
-      border-radius: 8px;
-      object-fit: cover;
-      margin: 8px auto 4px;
-      display: none;
-      box-shadow: 0 2px 8px rgba(0,0,0,.12);
-    }
-    .up-preview.round { border-radius: 50%; }
-    .up-filename { font-size: 10.5px; color: var(--blue); margin-top: 3px; word-break: break-all; font-weight: 500; }
+    .up-icon { width: 30px; height: 30px; margin: 0 auto 8px; color: var(--blue-l); }
+    .up-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .up-sub { font-size: 11.5px; color: var(--muted); }
+    .up-preview { height: 44px; max-width: 120px; border-radius: 6px; object-fit: contain; margin: 10px auto 4px; display: none; background: #f3f4f6; padding: 4px; }
+    .up-filename { font-size: 11px; color: var(--blue); font-weight: 500; margin-top: 2px; }
 
     /* RODO */
-    .rodo-wrap {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 22px;
-      padding: 14px 16px;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-    }
-    .rodo-wrap input[type=checkbox] {
-      width: 16px; height: 16px;
-      accent-color: var(--blue);
-      flex-shrink: 0;
-      margin-top: 2px;
-      cursor: pointer;
-    }
-    .rodo-wrap label {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.6;
-      cursor: pointer;
-    }
+    .rodo-wrap { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 20px; padding: 13px 15px; background: #fff; border: 1.5px solid var(--border); border-radius: 8px; }
+    .rodo-wrap input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--blue); flex-shrink: 0; margin-top: 2px; cursor: pointer; }
+    .rodo-wrap label { font-size: 12px; color: var(--muted); line-height: 1.6; cursor: pointer; }
     .rodo-wrap label a { color: var(--blue); text-decoration: none; }
     .rodo-wrap label a:hover { text-decoration: underline; }
 
     /* Button */
     .btn-submit {
-      width: 100%;
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 14px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: .2px;
-      cursor: pointer;
-      transition: background .2s var(--ease), transform .15s var(--ease), box-shadow .2s var(--ease);
+      width: 100%; background: var(--blue); color: #fff; border: none;
+      border-radius: 10px; padding: 13px;
+      font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700;
+      cursor: pointer; letter-spacing: .2px;
+      transition: background .2s, transform .15s, box-shadow .2s;
       box-shadow: 0 4px 14px rgba(3,83,164,.2);
     }
-    .btn-submit:hover {
-      background: #024a90;
-      transform: translateY(-1px);
-      box-shadow: 0 8px 20px rgba(3,83,164,.28);
-    }
+    .btn-submit:hover { background: #024a90; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(3,83,164,.28); }
     .btn-submit:active { transform: translateY(0); }
 
-    .privacy {
-      text-align: center;
-      font-size: 11.5px;
-      color: #9ca3af;
-      margin-top: 14px;
-      line-height: 1.6;
-    }
+    .privacy { text-align: center; font-size: 11.5px; color: #9ca3af; margin-top: 13px; line-height: 1.6; }
+    .privacy a { color: var(--blue); text-decoration: none; }
 
-    /* Mobile */
     @media (max-width: 800px) {
       body { flex-direction: column; }
       .panel-left { width: 100%; padding: 36px 28px 28px; }
-      .panel-logo { margin-bottom: 32px; }
-      .panel-facts { display: none; }
-      .panel-divider { display: none; }
-      .panel-heading { font-size: 24px; }
-      .panel-right { padding: 36px 24px; }
+      .panel-logo { margin-bottom: 28px; }
+      .panel-facts, .panel-divider { display: none; }
+      .panel-heading { font-size: 22px; }
+      .panel-right { padding: 36px 22px; }
       .row-2 { grid-template-columns: 1fr; gap: 0; }
-      .upload-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- LEFT -->
 <div class="panel-left">
   <svg class="geo" viewBox="0 0 400 700" preserveAspectRatio="xMidYMid slice">
-    <rect class="r1" x="120" y="80" width="160" height="160" rx="16" stroke-width="1.5"/>
-    <circle class="r2" cx="80" cy="420" r="90" stroke-width="1"/>
-    <rect class="r3" x="260" y="440" width="120" height="120" rx="10" stroke-width="1"/>
-    <circle cx="300" cy="120" r="40" stroke-width="1" fill="none" stroke="rgba(255,255,255,.06)"/>
-    <circle cx="60" cy="620" r="60" stroke-width="1" fill="none" stroke="rgba(255,255,255,.06)"/>
+    <rect class="r1" x="120" y="80" width="160" height="160" rx="16" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1.5"/>
+    <circle class="r2" cx="80" cy="420" r="90" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+    <rect class="r3" x="260" y="440" width="120" height="120" rx="10" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
   </svg>
-
   <div class="panel-content">
     <img src="/static/logo_white.png" alt="Print Flow Solutions" class="panel-logo">
-
     <p class="panel-eyebrow">Opinie klientow</p>
     <h1 class="panel-heading">Twoja opinia<br>jest dla nas wazna</h1>
-    <p class="panel-sub">Dziekujemy za wspolprace. Napisz krotko, jak oceniasz nasze uslugi — pomaga to innym firmom podjac dobra decyzje.</p>
-
+    <p class="panel-sub">Dziekujemy za wspolprace. Napisz krotko jak oceniasz nasze uslugi — pomaga to innym firmom podjac dobra decyzje.</p>
     <div class="panel-divider"></div>
-
     <ul class="panel-facts">
       <li><div class="fact-dot"></div>Wypelnienie zajmuje okolo 2 minut</li>
-      <li><div class="fact-dot"></div>Twoje dane nie trafia do osob trzecich</li>
+      <li><div class="fact-dot"></div>Twoje dane nie trafiaja do osob trzecich</li>
       <li><div class="fact-dot"></div>Opinia pojawia sie po weryfikacji przez nasz zespol</li>
       <li><div class="fact-dot"></div>Ponad 190 firm nam zaufalo</li>
     </ul>
   </div>
 </div>
 
-<!-- RIGHT -->
 <div class="panel-right">
   <div class="form-card">
     <p class="form-eyebrow">Formularz opinii</p>
@@ -430,13 +158,10 @@
     <p class="form-sub">Pola oznaczone * sa wymagane.</p>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
-      {% for cat, msg in messages %}
-        <div class="flash">{{ msg }}</div>
-      {% endfor %}
+      {% for cat, msg in messages %}<div class="flash">{{ msg }}</div>{% endfor %}
     {% endwith %}
 
-    <form action="/submit" method="post" enctype="multipart/form-data" id="opinia-form">
-
+    <form action="/submit" method="post" enctype="multipart/form-data">
       <div class="row-2">
         <div class="field">
           <label for="name">Imie i nazwisko <span class="req">*</span></label>
@@ -453,108 +178,68 @@
         <input type="text" id="job_title" name="job_title" placeholder="np. Kierownik biura, Dyrektor IT">
       </div>
 
-      <div class="field">
-        <span class="stars-label">Ocena ogolna <span class="req">*</span></span>
-        <div class="stars-wrap">
-          <input type="radio" id="s5" name="rating" value="5" checked>
-          <label for="s5" title="5 — swietnie">&#9733;</label>
-          <input type="radio" id="s4" name="rating" value="4">
-          <label for="s4" title="4 — bardzo dobrze">&#9733;</label>
-          <input type="radio" id="s3" name="rating" value="3">
-          <label for="s3" title="3 — srednio">&#9733;</label>
-          <input type="radio" id="s2" name="rating" value="2">
-          <label for="s2" title="2 — slabo">&#9733;</label>
-          <input type="radio" id="s1" name="rating" value="1">
-          <label for="s1" title="1 — zle">&#9733;</label>
-        </div>
+      <span class="stars-label">Ocena ogolna <span class="req">*</span></span>
+      <div class="stars-wrap">
+        <input type="radio" id="s5" name="rating" value="5" checked><label for="s5">&#9733;</label>
+        <input type="radio" id="s4" name="rating" value="4"><label for="s4">&#9733;</label>
+        <input type="radio" id="s3" name="rating" value="3"><label for="s3">&#9733;</label>
+        <input type="radio" id="s2" name="rating" value="2"><label for="s2">&#9733;</label>
+        <input type="radio" id="s1" name="rating" value="1"><label for="s1">&#9733;</label>
       </div>
 
       <div class="field">
         <label for="text">Twoja opinia <span class="req">*</span></label>
-        <textarea id="text" name="text" placeholder="Co szczegolnie Ci sie podobalo? Jak oceniasz obsluge, czas reakcji, jakosc serwisu?" required maxlength="800" oninput="updateCount(this)"></textarea>
-        <div class="char-count"><span id="char-count">0</span> / 800</div>
+        <textarea id="text" name="text" placeholder="Co szczegolnie Ci sie podobalo? Jak oceniasz obsluge, czas reakcji, jakosc serwisu?" required maxlength="800" oninput="document.getElementById('cc').textContent=this.value.length"></textarea>
+        <div class="char-count"><span id="cc">0</span> / 800</div>
       </div>
 
-      <span class="upload-label">Zdjecia (opcjonalnie)</span>
-      <div class="upload-row">
-        <div class="upload-zone" id="zone-photo" onclick="document.getElementById('photo').click()">
-          <svg class="up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-          </svg>
-          <div class="up-type">Twoje zdjecie</div>
-          <div class="up-title">Kliknij lub przeciagnij</div>
-          <div class="up-sub">JPG, PNG, WebP · max 5 MB</div>
-          <img id="preview-photo" class="up-preview round" alt="">
-          <div class="up-filename" id="name-photo"></div>
-          <input type="file" id="photo" name="photo" accept="image/*" onchange="handleFile(this,'preview-photo','name-photo')">
-        </div>
-
-        <div class="upload-zone" id="zone-logo" onclick="document.getElementById('logo').click()">
-          <svg class="up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h2m0 0 2 2 3-3" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <div class="up-type">Logo firmy</div>
-          <div class="up-title">Kliknij lub przeciagnij</div>
-          <div class="up-sub">JPG, PNG, WebP · max 5 MB</div>
-          <img id="preview-logo" class="up-preview" alt="">
-          <div class="up-filename" id="name-logo"></div>
-          <input type="file" id="logo" name="logo" accept="image/*" onchange="handleFile(this,'preview-logo','name-logo')">
-        </div>
+      <label class="upload-label" style="font-size:12.5px;font-weight:600;color:#374151;letter-spacing:.2px;display:block;margin-bottom:8px;">Logo firmy (opcjonalne)</label>
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('logo').click()">
+        <svg class="up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 9h18" stroke-linecap="round"/>
+        </svg>
+        <div class="up-title">Kliknij lub przeciagnij logo firmy</div>
+        <div class="up-sub">PNG, JPG, WebP · max 5 MB</div>
+        <img id="logo-preview" class="up-preview" alt="">
+        <div class="up-filename" id="logo-name"></div>
+        <input type="file" id="logo" name="logo" accept="image/*" onchange="handleFile(this)">
       </div>
 
       <div class="rodo-wrap">
         <input type="checkbox" id="rodo" name="rodo" required>
-        <label for="rodo">
-          Wyrazam zgode na publikacje powyzszej opinii wraz z podanym imieniem, nazwiskiem i nazwa firmy na stronie <strong>printflow.com.pl</strong>. Zgode mozna wycofac w dowolnym momencie pisac na <a href="mailto:biuro@printflow.com.pl">biuro@printflow.com.pl</a>.
-        </label>
+        <label for="rodo">Wyrazam zgode na publikacje powyzszej opinii wraz z podanym imieniem, nazwiskiem i nazwa firmy na stronie <strong>printflow.com.pl</strong>. Zgode mozna wycofac pisac na <a href="mailto:biuro@printflow.com.pl">biuro@printflow.com.pl</a>.</label>
       </div>
 
       <button type="submit" class="btn-submit">Wyslij opinie</button>
     </form>
 
-    <p class="privacy">Twoje dane przetwarzamy zgodnie z <a href="https://printflow.com.pl/polityka-prywatnosci" style="color:#0353a4;text-decoration:none;">polityka prywatnosci</a>.</p>
+    <p class="privacy">Twoje dane przetwarzamy zgodnie z <a href="https://printflow.com.pl/polityka-prywatnosci">polityka prywatnosci</a>.</p>
   </div>
 </div>
 
 <script>
-function updateCount(el) {
-  document.getElementById('char-count').textContent = el.value.length;
-}
-
-function handleFile(input, previewId, nameId) {
+function handleFile(input) {
   const file = input.files && input.files[0];
   if (!file) return;
   const reader = new FileReader();
   reader.onload = e => {
-    const img = document.getElementById(previewId);
+    const img = document.getElementById('logo-preview');
     img.src = e.target.result;
     img.style.display = 'block';
-    document.getElementById(nameId).textContent = file.name;
+    document.getElementById('logo-name').textContent = file.name;
   };
   reader.readAsDataURL(file);
 }
-
-['zone-photo','zone-logo'].forEach(zoneId => {
-  const zone = document.getElementById(zoneId);
-  const inputId = zoneId === 'zone-photo' ? 'photo' : 'logo';
-  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
-  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
-  zone.addEventListener('drop', e => {
-    e.preventDefault(); zone.classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-      document.getElementById(inputId).files = e.dataTransfer.files;
-      document.getElementById(inputId).dispatchEvent(new Event('change'));
-    }
-  });
-});
-
-// Fade-in na load
-document.querySelector('.panel-left').style.cssText = 'opacity:0;transition:opacity .6s ease';
-document.querySelector('.form-card').style.cssText = 'opacity:0;transform:translateY(20px);transition:opacity .5s ease .15s,transform .5s ease .15s';
-window.addEventListener('load', () => {
-  document.querySelector('.panel-left').style.opacity = '1';
-  document.querySelector('.form-card').style.cssText = 'opacity:1;transform:translateY(0);transition:opacity .5s ease .15s,transform .5s ease .15s';
+const zone = document.getElementById('upload-zone');
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+zone.addEventListener('drop', e => {
+  e.preventDefault(); zone.classList.remove('dragover');
+  const f = e.dataTransfer.files[0];
+  if (f && f.type.startsWith('image/')) {
+    document.getElementById('logo').files = e.dataTransfer.files;
+    handleFile(document.getElementById('logo'));
+  }
 });
 </script>
 </body>

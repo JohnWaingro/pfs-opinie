@@ -268,6 +268,17 @@
 
         <div class="t-date">Dodano: {{ t['created_at'][:16].replace('T', ' ') }}</div>
 
+        <!-- Kategoria -->
+        <form method="post" action="/admin/action/{{ t['id'] }}" style="margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+          <input type="hidden" name="action" value="{{ t['status'] }}">
+          <select name="category" style="background:#1e1e2e;border:1px solid #2a2a3e;color:#e5e7eb;border-radius:6px;padding:5px 10px;font-size:12px;cursor:pointer;">
+            {% for key, label in categories.items() %}
+            <option value="{{ key }}" {% if t['category'] == key %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+          <button class="btn" style="background:rgba(0,180,216,.1);color:#00b4d8;border:1px solid rgba(0,180,216,.2);font-size:11px;padding:5px 10px;">Zapisz kategorie</button>
+        </form>
+
         <div class="t-actions">
           {% if t['status'] != 'approved' %}
           <form method="post" action="/admin/action/{{ t['id'] }}">

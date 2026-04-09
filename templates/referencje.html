@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Referencje — Print Flow Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --blue: #0353a4; --blue-l: #00b4d8; --text: #0d0d0d; --muted: #6b7280; --border: #e5e7eb; --bg: #f7f8fa; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+    /* Header */
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 20px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    header img { height: 32px; object-fit: contain; }
+    header p { font-size: 13px; color: var(--muted); }
+
+    /* Nav */
+    .cat-nav { padding: 28px 48px 0; display: flex; gap: 8px; flex-wrap: wrap; }
+    .cat-btn {
+      padding: 7px 16px; border-radius: 999px;
+      font-size: 13px; font-weight: 500;
+      text-decoration: none; color: var(--muted);
+      background: #fff; border: 1.5px solid var(--border);
+      transition: all .2s;
+    }
+    .cat-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .cat-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+    /* Main */
+    main { padding: 36px 48px 64px; max-width: 1200px; margin: 0 auto; }
+    .page-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px; font-weight: 700; letter-spacing: -.4px;
+      color: var(--text); margin-bottom: 6px;
+    }
+    .page-sub { font-size: 15px; color: var(--muted); margin-bottom: 36px; }
+
+    /* Grid */
+    .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+
+    .card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 14px; padding: 26px;
+      display: flex; flex-direction: column; gap: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.05);
+      transition: box-shadow .2s, transform .2s;
+    }
+    .card:hover { box-shadow: 0 6px 20px rgba(0,0,0,.09); transform: translateY(-2px); }
+
+    .card-stars { color: #f59e0b; font-size: 14px; letter-spacing: 1px; }
+
+    .card-text {
+      font-size: 14.5px; color: #374151; line-height: 1.72;
+      flex: 1; font-style: italic;
+    }
+    .card-text::before { content: '\201e'; }
+    .card-text::after  { content: '\201d'; }
+
+    .card-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 14px; border-top: 1px solid #f3f4f6; }
+    .card-author { display: flex; flex-direction: column; gap: 2px; }
+    .card-author strong { font-size: 13.5px; font-weight: 600; color: var(--text); }
+    .card-author small { font-size: 12px; color: var(--muted); }
+
+    .card-logo { height: 32px; max-width: 90px; object-fit: contain; opacity: .85; }
+    .card-ini {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--blue-l));
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; flex-shrink: 0;
+    }
+
+    .empty { text-align: center; padding: 80px 0; color: var(--muted); font-size: 15px; }
+
+    /* Footer */
+    footer { text-align: center; padding: 24px; font-size: 12px; color: #9ca3af; border-top: 1px solid var(--border); }
+
+    @media (max-width: 640px) {
+      header, .cat-nav, main { padding-left: 20px; padding-right: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="/static/logo.png" alt="Print Flow Solutions">
+  <p>Referencje klientow — dokument poufny</p>
+</header>
+
+<nav class="cat-nav" aria-label="Kategorie">
+  <a class="cat-btn {% if not current_category %}active{% endif %}" href="/referencje">Wszystkie</a>
+  {% for key, label in categories.items() %}
+  <a class="cat-btn {% if current_category == key %}active{% endif %}" href="/referencje/{{ key }}">{{ label }}</a>
+  {% endfor %}
+</nav>
+
+<main>
+  <h1 class="page-title">{{ cat_label }}</h1>
+  <p class="page-sub">{{ testimonials|length }} {% if testimonials|length == 1 %}referencja{% elif testimonials|length in [2,3,4] %}referencje{% else %}referencji{% endif %}</p>
+
+  {% if not testimonials %}
+  <div class="empty">Brak referencji w tej kategorii.</div>
+  {% else %}
+  <div class="grid">
+    {% for t in testimonials %}
+    <article class="card">
+      <div class="card-stars">
+        {% for i in range(t['rating']) %}&#9733;{% endfor %}{% for i in range(5 - t['rating']) %}&#9734;{% endfor %}
+      </div>
+      <p class="card-text">{{ t['text'] }}</p>
+      <div class="card-footer">
+        <div style="display:flex;align-items:center;gap:10px;">
+          {% if not t['logo_filename'] %}
+          <div class="card-ini">{{ t['name'][:1] }}{% if ' ' in t['name'] %}{{ t['name'].split(' ')[1][:1] }}{% endif %}</div>
+          {% endif %}
+          <div class="card-author">
+            <strong>{{ t['name'] }}</strong>
+            <small>{% if t['job_title'] %}{{ t['job_title'] }}{% if t['company'] %} &middot; {% endif %}{% endif %}{{ t['company'] or '' }}</small>
+          </div>
+        </div>
+        {% if t['logo_filename'] %}
+        <img class="card-logo" src="/static/uploads/{{ t['logo_filename'] }}" alt="{{ t['company'] or '' }}">
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% endif %}
+</main>
+
+<footer>Print Flow Solutions &nbsp;&middot;&nbsp; Dokument przygotowany indywidualnie</footer>
+
+</body>
+</html>
