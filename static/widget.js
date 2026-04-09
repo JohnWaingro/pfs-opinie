@@ -3,7 +3,7 @@
  *
  * Uzycie na stronie:
  *   <div id="pfs-testimonials"></div>
- *   <script src="https://pfs-opinie.onrender.com/static/widget.js"></script>
+ *   <script src="https://motivated-fascination-production-a41c.up.railway.app/static/widget.js"></script>
  *
  * Opcjonalne atrybuty na divie:
  *   data-max="6"   — max liczba opinii (domyslnie wszystkie)
