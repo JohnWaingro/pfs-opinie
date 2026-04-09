@@ -132,7 +132,7 @@ def submit():
 def api_testimonials():
     with get_db() as conn:
         rows = conn.execute(
-            '''SELECT id, name, company, job_title, text, rating, photo_filename, created_at
+            '''SELECT id, name, company, job_title, text, rating, photo_filename, logo_filename, created_at
                FROM testimonials WHERE status = "approved"
                ORDER BY created_at DESC'''
         ).fetchall()

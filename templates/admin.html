@@ -251,9 +251,20 @@
         </div>
         <p class="t-text">{{ t['text'] }}</p>
 
-        {% if t['photo_filename'] %}
-        <div><img class="t-photo" src="/static/uploads/{{ t['photo_filename'] }}" alt="zdjecie klienta"></div>
-        {% endif %}
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:4px;">
+          {% if t['photo_filename'] %}
+          <div>
+            <div style="font-size:10px;color:#6b7280;margin-bottom:4px;letter-spacing:.5px;text-transform:uppercase;">Zdjecie</div>
+            <img style="height:80px;border-radius:8px;object-fit:cover;border:1px solid #2a2a3e;" src="/static/uploads/{{ t['photo_filename'] }}" alt="zdjecie">
+          </div>
+          {% endif %}
+          {% if t['logo_filename'] %}
+          <div>
+            <div style="font-size:10px;color:#6b7280;margin-bottom:4px;letter-spacing:.5px;text-transform:uppercase;">Logo firmy</div>
+            <img style="height:80px;max-width:160px;border-radius:8px;object-fit:contain;background:#fff;padding:6px;border:1px solid #2a2a3e;" src="/static/uploads/{{ t['logo_filename'] }}" alt="logo">
+          </div>
+          {% endif %}
+        </div>
 
         <div class="t-date">Dodano: {{ t['created_at'][:16].replace('T', ' ') }}</div>
 
