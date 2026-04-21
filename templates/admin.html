@@ -182,7 +182,7 @@
 <header>
   <img src="/static/logo.png" alt="PFS" class="header-logo">
   <div class="header-right">
-    <a href="/" target="_blank" class="view-form-btn">Podglad formularza</a>
+    <a href="/" target="_blank" class="view-form-btn">Podgląd formularza</a>
     <a href="/admin/logout">Wyloguj</a>
   </div>
 </header>
@@ -192,7 +192,7 @@
     <div class="sidebar-label">Opinie</div>
     <a class="nav-item pending {% if status_filter == 'pending' %}active{% endif %}"
        href="/admin?status=pending">
-      Oczekujace
+      Oczekujące
       <span class="nav-badge">{{ counts.get('pending', 0) }}</span>
     </a>
     <a class="nav-item approved {% if status_filter == 'approved' %}active{% endif %}"
@@ -215,7 +215,7 @@
 
   <main class="main">
     <div class="page-title">
-      {% if status_filter == 'pending' %}Oczekujace na zatwierdzenie
+      {% if status_filter == 'pending' %}Oczekujące na zatwierdzenie
       {% elif status_filter == 'approved' %}Zatwierdzone opinie
       {% else %}Odrzucone opinie{% endif %}
       {% if testimonials %}<span style="color:var(--muted);font-weight:400;font-size:14px;margin-left:8px;">({{ testimonials|length }})</span>{% endif %}
@@ -232,8 +232,8 @@
 
     {% for t in testimonials %}
     <div class="t-card">
-      {% if t['photo_filename'] %}
-        <img class="avatar" src="/static/uploads/{{ t['photo_filename'] }}" alt="{{ t['name'] }}">
+      {% if t['logo_filename'] %}
+        <img class="avatar" style="object-fit:contain;background:#fff;padding:4px;" src="/uploads/{{ t['logo_filename'] }}" alt="{{ t['name'] }}">
       {% else %}
         <div class="avatar-ini">
           {{ t['name'][:1] }}{% if ' ' in t['name'] %}{{ t['name'].split(' ')[1][:1] }}{% endif %}
@@ -251,56 +251,55 @@
         </div>
         <p class="t-text">{{ t['text'] }}</p>
 
+        {% if t['logo_filename'] %}
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:4px;">
-          {% if t['photo_filename'] %}
-          <div>
-            <div style="font-size:10px;color:#6b7280;margin-bottom:4px;letter-spacing:.5px;text-transform:uppercase;">Zdjecie</div>
-            <img style="height:80px;border-radius:8px;object-fit:cover;border:1px solid #2a2a3e;" src="/static/uploads/{{ t['photo_filename'] }}" alt="zdjecie">
-          </div>
-          {% endif %}
-          {% if t['logo_filename'] %}
           <div>
             <div style="font-size:10px;color:#6b7280;margin-bottom:4px;letter-spacing:.5px;text-transform:uppercase;">Logo firmy</div>
-            <img style="height:80px;max-width:160px;border-radius:8px;object-fit:contain;background:#fff;padding:6px;border:1px solid #2a2a3e;" src="/static/uploads/{{ t['logo_filename'] }}" alt="logo">
+            <img style="height:80px;max-width:160px;border-radius:8px;object-fit:contain;background:#fff;padding:6px;border:1px solid #2a2a3e;" src="/uploads/{{ t['logo_filename'] }}" alt="logo">
           </div>
-          {% endif %}
         </div>
+        {% endif %}
 
-        <div class="t-date">Dodano: {{ t['created_at'][:16].replace('T', ' ') }}</div>
+        <div class="t-date">Dodano: {{ t['created_at']|localtime }}</div>
 
         <!-- Kategoria -->
         <form method="post" action="/admin/action/{{ t['id'] }}" style="margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <input type="hidden" name="action" value="{{ t['status'] }}">
           <select name="category" style="background:#1e1e2e;border:1px solid #2a2a3e;color:#e5e7eb;border-radius:6px;padding:5px 10px;font-size:12px;cursor:pointer;">
             {% for key, label in categories.items() %}
             <option value="{{ key }}" {% if t['category'] == key %}selected{% endif %}>{{ label }}</option>
             {% endfor %}
           </select>
-          <button class="btn" style="background:rgba(0,180,216,.1);color:#00b4d8;border:1px solid rgba(0,180,216,.2);font-size:11px;padding:5px 10px;">Zapisz kategorie</button>
+          <button class="btn" style="background:rgba(0,180,216,.1);color:#00b4d8;border:1px solid rgba(0,180,216,.2);font-size:11px;padding:5px 10px;">Zapisz kategorię</button>
         </form>
 
         <div class="t-actions">
           {% if t['status'] != 'approved' %}
           <form method="post" action="/admin/action/{{ t['id'] }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="hidden" name="action" value="approved">
-            <button class="btn btn-approve">Zatwierdz</button>
+            <button class="btn btn-approve">Zatwierdź</button>
           </form>
           {% endif %}
           {% if t['status'] != 'rejected' %}
           <form method="post" action="/admin/action/{{ t['id'] }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="hidden" name="action" value="rejected">
-            <button class="btn btn-reject">Odrzuc</button>
+            <button class="btn btn-reject">Odrzuć</button>
           </form>
           {% endif %}
           {% if t['status'] != 'pending' %}
           <form method="post" action="/admin/action/{{ t['id'] }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="hidden" name="action" value="pending">
             <button class="btn btn-pending">Cofnij</button>
           </form>
           {% endif %}
           <form method="post" action="/admin/delete/{{ t['id'] }}"
-                onsubmit="return confirm('Na pewno usunac?')">
-            <button class="btn btn-delete">Usun</button>
+                onsubmit="return confirm('Na pewno usunąć?')">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button class="btn btn-delete">Usuń</button>
           </form>
         </div>
       </div>

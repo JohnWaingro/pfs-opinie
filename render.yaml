@@ -8,6 +8,8 @@ services:
       name: data
       mountPath: /data
     envVars:
+      - key: DATA_DIR
+        value: /data
       - key: DB_PATH
         value: /data/testimonials.db
       - key: SECRET_KEY

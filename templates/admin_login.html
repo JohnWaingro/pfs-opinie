@@ -73,8 +73,9 @@
     {% for msg in messages %}<div class="flash">{{ msg }}</div>{% endfor %}
   {% endwith %}
   <form method="post">
-    <input type="password" name="password" placeholder="Haslo" autofocus>
-    <button type="submit">Zaloguj sie</button>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="password" name="password" placeholder="Hasło" autofocus>
+    <button type="submit">Zaloguj się</button>
   </form>
 </div>
 </body>

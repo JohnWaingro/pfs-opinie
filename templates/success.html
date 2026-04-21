@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dziekujemy — Print Flow Solutions</title>
+  <title>Dziękujemy — Print Flow Solutions</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
@@ -86,10 +86,10 @@
       <polyline points="20 6 9 17 4 12"/>
     </svg>
   </div>
-  <h1>Dziekujemy, {{ name }}!</h1>
-  <p>Twoja opinia zostala przyjeta. Po krotkim przegladzeniu przez nasz zespol pojawi sie na stronie <strong>printflow.com.pl</strong>.</p>
+  <h1>Dziękujemy{% if name %}, {{ name }}{% endif %}!</h1>
+  <p>Twoja opinia została przyjęta. Po krótkim przejrzeniu przez nasz zespół pojawi się na stronie <strong>printflow.com.pl</strong>.</p>
   <div class="divider"></div>
-  <a class="back" href="/">Dodaj kolejna opinie</a>
+  <a class="back" href="/">Dodaj kolejną opinię</a>
 </div>
 </body>
 </html>

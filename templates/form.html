@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Podziel sie opinia — Print Flow Solutions</title>
+  <title>Podziel się opinią — Print Flow Solutions</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -138,15 +138,15 @@
   </svg>
   <div class="panel-content">
     <img src="/static/logo_white.png" alt="Print Flow Solutions" class="panel-logo">
-    <p class="panel-eyebrow">Opinie klientow</p>
-    <h1 class="panel-heading">Twoja opinia<br>jest dla nas wazna</h1>
-    <p class="panel-sub">Dziekujemy za wspolprace. Napisz krotko jak oceniasz nasze uslugi — pomaga to innym firmom podjac dobra decyzje.</p>
+    <p class="panel-eyebrow">Opinie klientów</p>
+    <h1 class="panel-heading">Twoja opinia<br>jest dla nas ważna</h1>
+    <p class="panel-sub">Dziękujemy za współpracę. Napisz krótko, jak oceniasz nasze usługi — pomaga to innym firmom podjąć dobrą decyzję.</p>
     <div class="panel-divider"></div>
     <ul class="panel-facts">
-      <li><div class="fact-dot"></div>Wypelnienie zajmuje okolo 2 minut</li>
-      <li><div class="fact-dot"></div>Twoje dane nie trafiaja do osob trzecich</li>
-      <li><div class="fact-dot"></div>Opinia pojawia sie po weryfikacji przez nasz zespol</li>
-      <li><div class="fact-dot"></div>Ponad 190 firm nam zaufalo</li>
+      <li><div class="fact-dot"></div>Wypełnienie zajmuje około 2 minut</li>
+      <li><div class="fact-dot"></div>Twoje dane nie trafiają do osób trzecich</li>
+      <li><div class="fact-dot"></div>Opinia pojawia się po weryfikacji przez nasz zespół</li>
+      <li><div class="fact-dot"></div>Ponad 190 firm nam zaufało</li>
     </ul>
   </div>
 </div>
@@ -154,31 +154,36 @@
 <div class="panel-right">
   <div class="form-card">
     <p class="form-eyebrow">Formularz opinii</p>
-    <h2 class="form-title">Napisz opinie</h2>
-    <p class="form-sub">Pola oznaczone * sa wymagane.</p>
+    <h2 class="form-title">Napisz opinię</h2>
+    <p class="form-sub">Pola oznaczone * są wymagane.</p>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% for cat, msg in messages %}<div class="flash">{{ msg }}</div>{% endfor %}
     {% endwith %}
 
     <form action="/submit" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div style="position:absolute;left:-9999px;" aria-hidden="true">
+        <label for="website">Nie wypełniaj tego pola</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+      </div>
       <div class="row-2">
         <div class="field">
-          <label for="name">Imie i nazwisko <span class="req">*</span></label>
-          <input type="text" id="name" name="name" placeholder="Jan Kowalski" required autocomplete="name">
+          <label for="name">Imię i nazwisko <span class="req">*</span></label>
+          <input type="text" id="name" name="name" placeholder="Jan Kowalski" required autocomplete="name" minlength="3" maxlength="100">
         </div>
         <div class="field">
           <label for="company">Firma</label>
-          <input type="text" id="company" name="company" placeholder="Nazwa firmy" autocomplete="organization">
+          <input type="text" id="company" name="company" placeholder="Nazwa firmy" autocomplete="organization" maxlength="100">
         </div>
       </div>
 
       <div class="field">
         <label for="job_title">Stanowisko</label>
-        <input type="text" id="job_title" name="job_title" placeholder="np. Kierownik biura, Dyrektor IT">
+        <input type="text" id="job_title" name="job_title" placeholder="np. Kierownik biura, Dyrektor IT" maxlength="100">
       </div>
 
-      <span class="stars-label">Ocena ogolna <span class="req">*</span></span>
+      <span class="stars-label">Ocena ogólna <span class="req">*</span></span>
       <div class="stars-wrap">
         <input type="radio" id="s5" name="rating" value="5" checked><label for="s5">&#9733;</label>
         <input type="radio" id="s4" name="rating" value="4"><label for="s4">&#9733;</label>
@@ -189,7 +194,7 @@
 
       <div class="field">
         <label for="text">Twoja opinia <span class="req">*</span></label>
-        <textarea id="text" name="text" placeholder="Co szczegolnie Ci sie podobalo? Jak oceniasz obsluge, czas reakcji, jakosc serwisu?" required maxlength="800" oninput="document.getElementById('cc').textContent=this.value.length"></textarea>
+        <textarea id="text" name="text" placeholder="Co szczególnie Ci się podobało? Jak oceniasz obsługę, czas reakcji, jakość serwisu?" required minlength="2" maxlength="800" oninput="document.getElementById('cc').textContent=this.value.length"></textarea>
         <div class="char-count"><span id="cc">0</span> / 800</div>
       </div>
 
@@ -198,7 +203,7 @@
         <svg class="up-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 9h18" stroke-linecap="round"/>
         </svg>
-        <div class="up-title">Kliknij lub przeciagnij logo firmy</div>
+        <div class="up-title">Kliknij lub przeciągnij logo firmy</div>
         <div class="up-sub">PNG, JPG, WebP · max 5 MB</div>
         <img id="logo-preview" class="up-preview" alt="">
         <div class="up-filename" id="logo-name"></div>
@@ -207,13 +212,13 @@
 
       <div class="rodo-wrap">
         <input type="checkbox" id="rodo" name="rodo" required>
-        <label for="rodo">Wyrazam zgode na publikacje powyzszej opinii wraz z podanym imieniem, nazwiskiem i nazwa firmy na stronie <strong>printflow.com.pl</strong>. Zgode mozna wycofac pisac na <a href="mailto:biuro@printflow.com.pl">biuro@printflow.com.pl</a>.</label>
+        <label for="rodo">Wyrażam zgodę na publikację powyższej opinii wraz z podanym imieniem, nazwiskiem i nazwą firmy na stronie <strong>printflow.com.pl</strong>. Zgodę można wycofać pisząc na <a href="mailto:biuro@printflow.com.pl">biuro@printflow.com.pl</a>.</label>
       </div>
 
-      <button type="submit" class="btn-submit">Wyslij opinie</button>
+      <button type="submit" class="btn-submit">Wyślij opinię</button>
     </form>
 
-    <p class="privacy">Twoje dane przetwarzamy zgodnie z <a href="https://printflow.com.pl/polityka-prywatnosci">polityka prywatnosci</a>.</p>
+    <p class="privacy">Twoje dane przetwarzamy zgodnie z <a href="https://printflow.com.pl/polityka-prywatnosci">polityką prywatności</a>.</p>
   </div>
 </div>
 
